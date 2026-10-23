@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocOps Commander — Alexa+ style operations agent</title>
+<meta name="description" content="An agentic document-operations console that diagnoses failures, drafts policy-cited plans and executes them only behind an explicit human approval gate.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23FF9900'/%3E%3Cpath d='M4 12h3.2l1.9-4.6 2.8 9 2.3-6.4 1.6 2H20' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#cmdInput">Skip to command box</a>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12h3.5l2-5 3 10 2.5-7 1.7 4H21"/>
+      </svg>
+    </span>
+    <span class="brand-text">
+      <span class="brand-name">DocOps Commander</span>
+      <span class="brand-sub">Alexa+ style operations agent</span>
+    </span>
+  </div>
+
+  <div class="topbar-right">
+    <span class="mcp-pill" id="mcpPill" title="Model Context Protocol connection status">
+      <span class="mcp-dot" id="mcpDot"></span>
+      <span id="mcpPillText">Connecting to MCP…</span>
+    </span>
+    <button type="button" class="btn-quiet" id="btnHelp">Help</button>
+    <button type="button" class="btn-quiet" id="btnReset">Reset</button>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- ───────────────────────── conversation ───────────────────────── -->
+  <section class="panel convo-panel" aria-label="Conversation">
+    <div class="convo-scroll" id="convo">
+
+      <div class="welcome" id="welcome">
+        <p class="eyebrow">Good morning</p>
+        <h1 class="welcome-title">What needs handling?</h1>
+        <p class="welcome-sub" id="welcomeSub">Loading the operations board…</p>
+        <div class="chip-row" id="welcomeChips"></div>
+      </div>
+
+      <!-- messages are appended here -->
+    </div>
+
+    <div class="composer">
+      <form class="composer-form" id="composerForm" autocomplete="off">
+        <label class="sr-only" for="cmdInput">Ask DocOps Commander</label>
+        <input class="composer-input" id="cmdInput" name="cmd"
+               placeholder="Ask about a failure, or say “resolve safe failures”"
+               spellcheck="false" autocomplete="off">
+        <button class="btn-cta" type="submit" id="sendBtn">Send</button>
+      </form>
+      <p class="composer-hint">
+        <span class="hint-dot" aria-hidden="true"></span>
+        Deterministic narration · every action gated by human approval
+      </p>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── operations board ───────────────────────── -->
+  <aside class="panel side-panel" aria-label="Operations board">
+
+    <div class="side-head">
+      <h2 class="side-title">Operations board</h2>
+      <span class="live"><span class="live-dot" aria-hidden="true"></span>Live</span>
+    </div>
+
+    <div class="tile-row" id="tileRow"></div>
+
+    <div class="tabs" role="tablist" aria-label="Board views">
+      <button class="tab is-active" role="tab" aria-selected="true" data-tab="cases" id="tabCases">
+        Cases <span class="tab-count" id="caseCount">0</span>
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="memory" id="tabMemory">Memory</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="audit" id="tabAudit">Audit</button>
+    </div>
+
+    <div class="tab-panels">
+      <div class="tab-panel" id="caseList" role="tabpanel" aria-labelledby="tabCases"></div>
+      <div class="tab-panel hidden" id="memoryList" role="tabpanel" aria-labelledby="tabMemory"></div>
+      <div class="tab-panel hidden" id="auditList" role="tabpanel" aria-labelledby="tabAudit"></div>
+    </div>
+  </aside>
+
+</main>
+
+<!-- ───────────────────────── approval modal ───────────────────────── -->
+<div class="modal-backdrop" id="modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalBody">
+    <div class="modal-head">
+      <span class="modal-kicker" id="modalKicker">Human approval required</span>
+      <button type="button" class="btn-close" id="btnClose" aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+    <h2 class="modal-title" id="modalTitle">Review this plan</h2>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot">
+      <button type="button" class="btn-quiet" id="btnReject">Not now</button>
+      <button type="button" class="btn-cta" id="btnApprove">Approve plan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
