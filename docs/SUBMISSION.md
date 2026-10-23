@@ -7,6 +7,11 @@
 Everything in this file is copy meant for the Devpost form. The full answers behind
 the summaries live in [`FEEDBACK.md`](FEEDBACK.md) and [`FRICTION_LOG.md`](FRICTION_LOG.md).
 
+> **Using the current 18-field form?** Paste from [`DEVPOST_ANSWERS.md`](DEVPOST_ANSWERS.md)
+> instead — it answers each question exactly as Devpost numbers it (name, pitch,
+> about, built with, repo/demo, video, both mini challenges, the five consolidated
+> feedback questions, AI tools, learning level and career value).
+
 ---
 
 ## 1. Field-by-field pastes
